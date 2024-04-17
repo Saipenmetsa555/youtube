@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const SideBar = () => {
   return (
-    <div className="w-1/5 overflow-y-scroll h-screen">
+    <div className="hidden md:block w-1/5 overflow-y-scroll h-screen">
       <div className="border border-b-1 border-t-0 border-r-0 border-l-0 border-b-gray-400">
         <div className="flex mx-2 p-3 cursor-pointer">
           <img

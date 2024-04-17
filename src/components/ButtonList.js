@@ -15,10 +15,12 @@ const list = [
 
 const ButtonList = () => {
   return (
-    <div className="flex justify-center">
-      {list.map((each) => (
-        <Button name={each} key={each} />
-      ))}
+    <div className="overflow-auto">
+      <div className="flex  justify-center">
+        {list.map((each) => (
+          <Button name={each} key={each} />
+        ))}
+      </div>
     </div>
   );
 };
