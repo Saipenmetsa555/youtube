@@ -1,11 +1,17 @@
+import { useSelector } from "react-redux";
 import ButtonList from "./ButtonList";
 import VideoContainer from "./VideoContainer";
 
 const MainContainer = () => {
+  const mobileOpen = useSelector((store) => store.app.mobileOpen);
   return (
     <div className="w-screen overflow-y-scroll">
-      <ButtonList />
-      <VideoContainer />
+      {!mobileOpen && (
+        <>
+          <ButtonList />
+          <VideoContainer />
+        </>
+      )}
     </div>
   );
 };

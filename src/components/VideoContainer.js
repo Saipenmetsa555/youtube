@@ -15,7 +15,7 @@ const VideoContainer = () => {
   return (
     <div className="flex flex-wrap justify-center">
       {dataHook.map((each) => (
-        <div className="">
+        <div key={each.id}>
           <Link to={"/watch?v=" + each.id} key={each.id}>
             <VideoCard data={each} key={each.id} />
           </Link>
