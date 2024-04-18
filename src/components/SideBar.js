@@ -22,7 +22,9 @@ const SideBar = () => {
               src="https://i.pinimg.com/originals/02/cc/2d/02cc2df2074675a18e9edf1d1e3dbb43.png"
               alt="short"
             />
-            <h1 className="mt-1">Shorts</h1>
+            <Link>
+              <h1 className="mt-1">Shorts</h1>
+            </Link>
           </div>
           <div className="flex mx-2 p-3  mb-3 cursor-pointer">
             <img

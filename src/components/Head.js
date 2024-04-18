@@ -1,9 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu, openMobileMenu } from "./utils/appSlice";
+import { Youtube_Suggestion_API } from "./utils/constant";
+import { useState, useEffect } from "react";
 
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const mobileOpen = useSelector((store) => store.app.mobileOpen);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const timer = setTimeout(() => getSearchSuggestion(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  const getSearchSuggestion = async () => {
+    console.log(searchQuery, "-API Call");
+    const response = await fetch(Youtube_Suggestion_API + searchQuery);
+    const data = await response.json();
+    setSuggestions(data[1]);
+  };
+
   const handleHead = () => {
     dispatch(toggleMenu());
   };
@@ -36,14 +57,31 @@ const Header = () => {
             />
           </div>
           <div>
-            <input
-              className="w-96 p-1 rounded-l-full ml-5 mt-5 mb-5 pl-5 border border-gray-400 outline-none"
-              placeholder="Search"
-              type="seach"
-            />
-            <button className="rounded-r-full border border-gray-400 p-1 w-16 bg-gray-100">
-              Search
-            </button>
+            <div>
+              <input
+                className="w-96 p-1 rounded-l-full ml-5 mt-5 mb-5 pl-5 border border-gray-400 outline-none"
+                placeholder="Search"
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setShowSuggestions(false)}
+              />
+              <button className="rounded-r-full border border-gray-400 p-1 w-16 bg-gray-100">
+                Search
+              </button>
+            </div>
+            {showSuggestions && (
+              <div className="ml-3 w-96 rounded-md py-2 px-10 fixed bg-white">
+                <ul>
+                  {suggestions.map((each) => (
+                    <li key={each} className="py-2 shadow-sm hover:bg-gray-100">
+                      🔍 {each}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <div className="flex mr-6 mt-3">
             <img
@@ -76,9 +114,9 @@ const Header = () => {
         {mobileOpen && (
           <div className="w-full h-2/4 text-center">
             <h1
-              onClick={() => {
-                // navigate("/");
-              }}
+              // onClick={() => {
+              //   navigate("/");
+              // }}
               className="text-5xl"
             >
               Home
