@@ -138,17 +138,17 @@ const Header = () => {
           />
           <input
             type="search"
-            className="border border-gray-400 h-7 my-6 rounded-l-full outline-none p-2"
+            className="border border-gray-400 h-7 w-1/3 my-6 rounded-l-full outline-none p-2"
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
           />
           <button
-            className="border border-gray-400 h-7 my-6 px-2 rounded-r-full"
+            className="border w-1/6 border-gray-400 h-7 my-6 px-2 rounded-r-full"
             onClick={() => handleSearch()}
           >
-            Search
+            🔍
           </button>
         </div>
         {mobileOpen && (
