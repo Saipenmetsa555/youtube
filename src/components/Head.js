@@ -12,7 +12,7 @@ const Header = () => {
   const mobileOpen = useSelector((store) => store.app.mobileOpen);
   const dispatch = useDispatch();
 
-  const { filteredData, setFilteredData } = useContext(FilterContext);
+  const { setFilteredData } = useContext(FilterContext);
 
   useEffect(() => {
     const timer = setTimeout(() => getSearchSuggestion(), 200);
@@ -129,13 +129,27 @@ const Header = () => {
         </div>
       </div>
       <div>
-        <div className="md:hidden shadow-md h-20">
+        <div className="flex md:hidden shadow-md h-20">
           <img
             onClick={() => headerHandle()}
             src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/hamburger-menu-icon.png"
             alt="hamberger"
             className="h-8 m-5"
           />
+          <input
+            type="search"
+            className="border border-gray-400 h-7 my-6 rounded-l-full outline-none p-2"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+          />
+          <button
+            className="border border-gray-400 h-7 my-6 px-2 rounded-r-full"
+            onClick={() => handleSearch()}
+          >
+            Search
+          </button>
         </div>
         {mobileOpen && (
           <div className="w-full h-2/4 text-center">
