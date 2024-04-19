@@ -3,7 +3,7 @@ import FilterContext from "./utils/UserContext";
 
 const VideoCard = ({ data }) => {
   const { filteredData } = useContext(FilterContext);
-  console.log(data);
+  // console.log(data);
   const { snippet, statistics } = data;
   const { localized, thumbnails } = snippet;
   // console.log(localized, thumbnails);

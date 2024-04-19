@@ -10,7 +10,7 @@ const VideoContainer = () => {
   const { filteredData } = useContext(FilterContext);
   // console.log(dataHook);
   console.log(filteredData);
-  if (dataHook.length === 0)
+  if (dataHook.length === 0 || filteredData.length === 0)
     return (
       <div>
         <Shimmer />
