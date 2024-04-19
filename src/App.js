@@ -5,6 +5,8 @@ import store from "./components/utils/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainContainer from "./components/MainContainer";
 import WatchPage from "./components/WatchPage";
+import FilterContext from "./components/utils/UserContext";
+import { useState } from "react";
 
 const appRouter = createBrowserRouter([
   {
@@ -24,12 +26,15 @@ const appRouter = createBrowserRouter([
 ]);
 
 const App = () => {
+  const [filteredData, setFilteredData] = useState([]);
   return (
     <Provider store={store}>
-      <div className="h-screen">
-        <Head />
-        <RouterProvider router={appRouter} />
-      </div>
+      <FilterContext.Provider value={{ filteredData, setFilteredData }}>
+        <div className="h-screen">
+          <Head />
+          <RouterProvider router={appRouter} />
+        </div>
+      </FilterContext.Provider>
     </Provider>
   );
 };

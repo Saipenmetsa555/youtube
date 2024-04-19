@@ -1,14 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu, openMobileMenu } from "./utils/appSlice";
 import { Youtube_Suggestion_API } from "./utils/constant";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import FilterContext from "./utils/UserContext";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
   const [showSuggestions, setShowSuggestions] = useState(false);
   const mobileOpen = useSelector((store) => store.app.mobileOpen);
   const dispatch = useDispatch();
+
+  const { filteredData, setFilteredData } = useContext(FilterContext);
 
   useEffect(() => {
     const timer = setTimeout(() => getSearchSuggestion(), 200);
@@ -18,8 +22,16 @@ const Header = () => {
     };
   }, [searchQuery]);
 
+  const handleSearch = async () => {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${searchQuery}&type=video&key=AIzaSyBxLms13d6g1aaObeDezA_GMtzaOrdDv2M`
+    );
+    const dataSearch = await response.json();
+    setFilteredData(dataSearch.items);
+  };
+
   const getSearchSuggestion = async () => {
-    console.log(searchQuery, "-API Call");
+    // console.log(searchQuery, "-API Call");
     const response = await fetch(Youtube_Suggestion_API + searchQuery);
     const data = await response.json();
     setSuggestions(data[1]);
@@ -29,12 +41,16 @@ const Header = () => {
     dispatch(toggleMenu());
   };
 
+  const handlePut = (each) => {
+    setSearchQuery(each);
+  };
+
   const headerHandle = () => {
     // console.log("open");
     // setMobileOpen(!mobileOpen);
     dispatch(openMobileMenu());
   };
-  console.log(mobileOpen);
+  // console.log(mobileOpen);
   return (
     <>
       <div className="hidden md:block">
@@ -65,9 +81,12 @@ const Header = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setShowSuggestions(false)}
+                // onBlur={() => setShowSuggestions(false)}
               />
-              <button className="rounded-r-full border border-gray-400 p-1 w-16 bg-gray-100">
+              <button
+                onClick={() => handleSearch()}
+                className="rounded-r-full border border-gray-400 p-1 w-16 bg-gray-100"
+              >
                 Search
               </button>
             </div>
@@ -75,7 +94,14 @@ const Header = () => {
               <div className="ml-3 w-96 rounded-md py-2 px-10 fixed bg-white">
                 <ul>
                   {suggestions.map((each) => (
-                    <li key={each} className="py-2 shadow-sm hover:bg-gray-100">
+                    <li
+                      onClick={() => {
+                        handlePut(each);
+                        setShowSuggestions(false);
+                      }}
+                      key={each}
+                      className="py-2 shadow-sm hover:bg-gray-100"
+                    >
                       🔍 {each}
                     </li>
                   ))}

@@ -1,11 +1,15 @@
+import { useContext } from "react";
 import Shimmer from "./Shimmer";
 import useVideoData from "./utils/useHook";
 import VideoCard from "./VideoCard";
 import { Link } from "react-router-dom";
+import FilterContext from "./utils/UserContext";
 
 const VideoContainer = () => {
   const dataHook = useVideoData();
-  console.log(dataHook);
+  const { filteredData } = useContext(FilterContext);
+  // console.log(dataHook);
+  console.log(filteredData);
   if (dataHook.length === 0)
     return (
       <div>
@@ -14,14 +18,21 @@ const VideoContainer = () => {
     );
   return (
     <div className="flex flex-wrap justify-center">
-      {dataHook.map((each) => (
-        <div key={each.id}>
-          <Link to={"/watch?v=" + each.id} key={each.id}>
-            <VideoCard data={each} key={each.id} />
-          </Link>
-        </div>
-      ))}
-      {/* <VideoCard info={dataHook[0]} /> */}
+      {filteredData.length !== 0
+        ? filteredData.map((each) => (
+            <div key={each.id}>
+              <Link to={"/watch?v=" + each.id.videoId} key={each.id}>
+                <VideoCard data={each} key={each.id} />
+              </Link>
+            </div>
+          ))
+        : dataHook.map((each) => (
+            <div key={each.id}>
+              <Link to={"/watch?v=" + each.id} key={each.id}>
+                <VideoCard data={each} key={each.id} />
+              </Link>
+            </div>
+          ))}
     </div>
   );
 };
